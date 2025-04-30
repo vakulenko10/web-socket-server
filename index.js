@@ -46,3 +46,18 @@ app.post("/broadcast", (req, res) => {
 server.listen(PORT, () => {
   console.log(`✅ WebSocket server running on port ${PORT}`);
 });
+app.post("/update-table", (req, res) => {
+  const updatedTable = req.body;
+
+  if (!updatedTable?.id) {
+    return res.status(400).json({ error: "Missing table ID" });
+  }
+
+  // Here you would normally update the table in the database.
+  // For now, assume it's already updated and send it to clients.
+
+  io.emit("reservation:update", updatedTable);
+  console.log(`Broadcasted update for table ID: ${updatedTable.id}`);
+
+  res.status(200).json({ success: true, table: updatedTable });
+});
